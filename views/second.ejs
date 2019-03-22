@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather App</title>
+    <link href="https://fonts.googleapis.com/css?family=Germania+One|Marck+Script|Sacramento|Vidaloka" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            
+    <script
+            src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+
+        body {
+            padding: 0px;
+            margin: 0px;
+            height: 700px;
+            position: relative;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .mainback{
+            background: url(https://www.desktopbackground.org/download/540x960/2013/05/20/578992_rain-raindrops-weather-background-wallpapers_1920x1080_h.jpg);
+            background-repeat: no-repeat;
+            
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            padding: 20px;
+        }
+        h1{
+            color: #fff;
+            float: left;
+            font-family: 'Sacramento', cursive;
+            font-size: 50px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        main{ 
+            display: flex;
+            padding: 10px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 50%;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+       
+
+        .search {width: 500px;height: 40px;margin: 20px ;background: #444;background: rgba(0,0,0,.2);border-radius:  3px;border: 1px solid #fff;}
+
+        .search input {width: 370px;padding: 10px 5px;float: left;color: #ccc;border: 0;background: transparent;border-radius: 3px 0 0 3px;}
+
+        .search input:focus {outline: 0;background:transparent;}
+
+        .search button {position: relative;float: right;border: 0;padding: 0;cursor: pointer;height: 40px;width: 120px;color: #fff;background: transparent;border-left: 1px solid #fff;border-radius: 0 3px 3px 0;}   
+
+        .search button:hover {background: #fff;color:#444;}
+        .search button:active {box-shadow: 0px 0px 12px 0px rgba(225, 225, 225, 1);}
+
+        .search button:focus {outline: 0;}
+
+       
+
+        
+        .sec2{
+           justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        p{
+            margin-top: 20px;
+            color:white;
+        }
+
+        .sidebyside{
+            display: flex;
+            float: left;
+            justify-content: space-between;
+            margin: 20px;
+            padding: 10px;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+        }
+        
+        
+        .control{
+            display: inline-flex;
+        }
+
+        .button{
+            background-color:rgb(107, 107, 238);
+            width: 50px;
+            padding: 10px;
+            margin: 10px;
+        }
+        .date{
+            margin-left: 5px;
+        }
+        .title{
+            orientation: center;
+        }
+
+        .sec3{
+            margin-top: 20px;
+            align-content: center;
+            padding: 20px;
+            margin-left: 20px;
+            display: block;
+        }
+        #canvas123{
+            margin-top: 15%;
+        }
+        ::placeholder{
+            color: #fff;
+        }
+        h2{
+            color: aqua;
+            font-size: 40px;
+
+        }
+        h3{
+            font-size: 40px;
+            color: aqua;
+        }
+        .plan{
+            text-align: center;
+            margin-top: 40px;
+        }
+        .plan p{
+            font-family: 'Marck Script', cursive;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+    <body>
+          <div class="mainback">  
+                <h1><strong>Know your Weather!!!</strong> </h1>
+                
+            <main>
+                <div class="plan">
+                        <p>Plan your day by searching for the weather in your city</p>
+                        <form method="POST" class="search" action="">
+                                <input type="search" name="city_name" placeholder="City Name" required>
+                                <button type="submit">Search</button>
+                        </form>
+                        
+                </div>
+            </main>
+            <section class="sec3">
+                    <div class="hero-body">
+                        <div >
+                            <h2><span class="title1"><strong><%= city %> :</strong> </span></h2>
+                            <h3 class="title">
+                                Current Weather: <%= list.current.temp_c %> ° C
+                            </h3>
+                        </div>
+                    </div>
+            </section>
+                
+                <section class="sec2">
+                    <div >
+                        <div class="columns">
+                            <div class="sidebyside">
+                               <% list.forecast.forecastday.forEach( f => { %>
+                                <div class="box">
+                                    <article class="media">
+                                        <div class="media-left">
+                                        <p class="date">
+                                            <span><%= f.date %></span>
+                                            <br>
+                                        </p>
+                                            <figure class="image is-50x50">
+                                                <img src="http://<%= f.day.condition.icon %>" alt="Image">
+                                            </figure>
+                                        </div>
+                                        <div class="media-content">
+                                            <div class="content">
+                                                <p>
+                                                    <span class="subtitle"><strong><%=f.day.avgtemp_c %>° C</strong></span>
+                                                    <br>
+                                                    <span>Humidity:  <%= f.day.avghumidity %> %</span> 
+                                                    <br>
+                                                    <span>Precipitation:  <%= f.day.totalprecip_mm %> mm</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                               <% }); %>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div id = "canvas123" class="py-5" >
+                        <div class="col-md-6 offset-md-3">                                <div class="card">
+                                <div class="card-body">
+                                   <h4> Variation over the days. </h4>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                            </div>    
+                        </div>
+                </div>
+                <p id="data123" style="display:none":>
+                    <%= dates %>
+                </p>
+                <p id="data1234" style="display:none">
+                    <%= humidity %>
+                </p>
+                <p id="data1235" style="display:none">
+                    <%= precipitation %>
+                </p>
+                <p id="data1236"style="display:none">
+                    <%= temp %>
+                </p>
+                
+                
+        </div>
+    </body>
+    
+    <script>
+      
+
+        
+        
+       var date = document.getElementById('data123').innerHTML;
+       var dates = JSON.parse(date);
+       var humidity = document.getElementById('data1234').innerHTML;
+       var humidities = JSON.parse(humidity);
+       var precipitation = document.getElementById('data1235').innerHTML;
+       var precipitations = JSON.parse(precipitation);
+       var temp = document.getElementById('data1236').innerHTML;
+       var temps = JSON.parse(temp);
+       console.log(dates);
+            var ctx = document.getElementById('myChart');
+             var myChart = new Chart(ctx, {
+                 type: 'line',
+                 data: {
+                     labels: dates,
+                     datasets: [{
+                         label: 'Temperature Variation',
+                         data: temps,
+                         backgroundColor: [
+                             'rgba(255, 99, 132, 0.5)'
+                             
+                         ]
+                     },{
+                     label: 'Humidity Variation',
+                         data: humidities,
+                         backgroundColor: [
+                            'rgba(54, 162, 235, 0.3)',
+                         ],
+                         
+                     },{
+                     label: 'Precipitation Variation',
+                         data: precipitations,
+                         backgroundColor: [
+                            'rgba(153, 102, 255, 0.6)'
+                         ]
+                     }
+                    ]
+                 },
+                 options: {
+                     scales: {
+                         yAxes: [{
+                             ticks: {
+                                 beginAtZero: true
+                             }
+                         }]
+                     }
+                 }
+             });
+         </script>
+    
+        
+
+
+
+</html>
